@@ -12,11 +12,7 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
   age: Number,
-  gender: String,
-  phone: String,
   city: String,
-  country: String,
-  occupation: String,
   isActive: {
     type: Boolean,
     default: true

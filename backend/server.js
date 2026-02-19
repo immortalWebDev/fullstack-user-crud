@@ -4,13 +4,16 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const User = require("./models/User");
 
-connectDB();
+connectDB(); //connection of server to db
 
-const app = express();
+const app = express(); //creates server instance (app is main controller of routes)
+
+//This is middleware
+//Without this, browser blocks requests from frontend (different domain).
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); //Parses JSON body from request.
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 // ==========================
 // READ ALL USERS
@@ -18,6 +21,7 @@ const PORT = process.env.PORT || 3000;
 app.get("/users", async (req, res) => {
   try {
     const users = await User.find();
+
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -46,9 +50,17 @@ app.get("/users/:id", async (req, res) => {
 // ==========================
 app.post("/users", async (req, res) => {
   try {
+    console.log(req.body);
+    console.log(res);
     const newUser = await User.create(req.body);
     res.status(201).json(newUser);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "Email already exists",
+      });
+    }
+
     res.status(400).json({ message: error.message });
   }
 });
@@ -58,11 +70,10 @@ app.post("/users", async (req, res) => {
 // ==========================
 app.put("/users/:id", async (req, res) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
