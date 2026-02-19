@@ -20,8 +20,9 @@ function UserCrud() {
   // ======================
   const fetchUsers = async () => {
     const res = await fetch(API);
+    // console.log(res)
     const data = await res.json();
-    console.log(Array.isArray(data));
+    // console.log(data)
     setUsers(data);
   };
 
@@ -41,24 +42,35 @@ function UserCrud() {
   // CREATE & UPDATE
   // ======================
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+
+  try {
+    let res;
 
     if (editingId) {
       // UPDATE
-      await fetch(`${API}/${editingId}`, {
+      res = await fetch(`${API}/${editingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
     } else {
       // CREATE
-      await fetch(API, {
+      res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
     }
 
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Something went wrong");
+      return; // stop execution
+    }
+
+    // Only reset if success
     setForm({
       firstName: "",
       lastName: "",
@@ -69,7 +81,12 @@ function UserCrud() {
 
     setEditingId(null);
     fetchUsers();
-  };
+
+  } catch (error) {
+    alert("Server error. Please try again.");
+    console.error(error);
+  }
+};
 
   // ======================
   // DELETE
