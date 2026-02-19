@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:3000/users";
+// const API = "http://localhost:3000/users";
+const API = `${import.meta.env.VITE_API_URL}/users`;
+
 
 function UserCrud() {
   const [users, setUsers] = useState([]);
