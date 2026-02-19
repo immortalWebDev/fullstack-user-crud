@@ -3,20 +3,14 @@ import { useEffect, useState } from "react";
 // const API = "http://localhost:3000/users";
 const API = `${import.meta.env.VITE_API_URL}/users`;
 
-
 function UserCrud() {
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    age: "",
-    gender: "",
-    phone: "",
+    age: "",    
     city: "",
-    country: "",
-    occupation: "",
-    isActive: true
   });
 
   const [editingId, setEditingId] = useState(null);
@@ -27,7 +21,7 @@ function UserCrud() {
   const fetchUsers = async () => {
     const res = await fetch(API);
     const data = await res.json();
-    console.log(Array.isArray(data)) //gives false
+    console.log(Array.isArray(data));
     setUsers(data);
   };
 
@@ -54,14 +48,14 @@ function UserCrud() {
       await fetch(`${API}/${editingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
     } else {
       // CREATE
       await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
     }
 
@@ -70,12 +64,7 @@ function UserCrud() {
       lastName: "",
       email: "",
       age: "",
-      gender: "",
-      phone: "",
       city: "",
-      country: "",
-      occupation: "",
-      isActive: true
     });
 
     setEditingId(null);
@@ -87,7 +76,7 @@ function UserCrud() {
   // ======================
   const handleDelete = async (id) => {
     await fetch(`${API}/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
     });
     fetchUsers();
   };
@@ -96,38 +85,88 @@ function UserCrud() {
   // EDIT
   // ======================
   const handleEdit = (user) => {
-    setForm(user);
-    setEditingId(user.id);
+    const { _id, createdAt, updatedAt, __v, ...rest } = user;
+    setForm(rest);
+    setEditingId(_id);
   };
 
   return (
-    <div>
-      <h2>User CRUD</h2>
+  <div className="container">
+    <h2>User CRUD</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input name="firstName" value={form.firstName} onChange={handleChange} placeholder="First Name" />
-        <input name="lastName" value={form.lastName} onChange={handleChange} placeholder="Last Name" />
-        <input name="email" value={form.email} onChange={handleChange} placeholder="Email" />
-        <input name="age" value={form.age} onChange={handleChange} placeholder="Age" />
-        <input name="city" value={form.city} onChange={handleChange} placeholder="City" />
-        <button type="submit">
-          {editingId ? "Update User" : "Add User"}
-        </button>
-      </form>
+    <form className="form" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <input
+          name="firstName"
+          value={form.firstName}
+          onChange={handleChange}
+          placeholder="First Name"
+        />
+        <input
+          name="lastName"
+          value={form.lastName}
+          onChange={handleChange}
+          placeholder="Last Name"
+        />
+      </div>
 
-      <hr />
+      <div className="form-group">
+        <input
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        <input
+          name="age"
+          value={form.age}
+          onChange={handleChange}
+          placeholder="Age"
+        />
+      </div>
 
-      <ul>
-        {users.map((user) => (
-          <li key={user._id}>
-            {user.firstName} - {user.email}
-            <button onClick={() => handleEdit(user)}>Edit</button>
-            <button onClick={() => handleDelete(user._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+      <input
+        name="city"
+        value={form.city}
+        onChange={handleChange}
+        placeholder="City"
+      />
+
+      <button type="submit" className="btn primary">
+        {editingId ? "Update User" : "Add User"}
+      </button>
+    </form>
+
+    <hr />
+
+    <ul className="user-list">
+      {users.map((user) => (
+        <li key={user._id} className="user-card">
+          <div>
+            <strong>{user.firstName}</strong>
+            <p>{user.email}</p>
+          </div>
+
+          <div className="actions">
+            <button
+              className="btn edit"
+              onClick={() => handleEdit(user)}
+            >
+              Edit
+            </button>
+            <button
+              className="btn delete"
+              onClick={() => handleDelete(user._id)}
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
 }
 
 export default UserCrud;
