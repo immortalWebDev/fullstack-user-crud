@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // const API =
 //   "https://fullstack-user-crud-production.up.railway.app/api/users";
 
-//  const API = "http://localhost:3000/api/users"
+// const API = "http://localhost:3000/api/users";
 
 const API = "https://fullstack-user-crud-production.up.railway.app/api/users"
 // // const API = `${import.meta.env.VITE_API_URL}/users`;
@@ -20,7 +20,7 @@ function UserCrud() {
 
   const [editingId, setEditingId] = useState(null);
 
-//   const token = localStorage.getItem("token");
+  //   const token = localStorage.getItem("token");
 
   // ======================
   // FETCH USERS (GET)
@@ -29,10 +29,10 @@ function UserCrud() {
     try {
       const res = await fetch(API, {
         headers: {
-        //   Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
+          //   Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-        credentials:"include"
+        credentials: "include",
       });
 
       if (res.status === 401) {
@@ -53,7 +53,7 @@ function UserCrud() {
 
   useEffect(() => {
     // if (token) {
-      fetchUsers();
+    fetchUsers();
     // }
   }, []);
 
@@ -81,7 +81,7 @@ function UserCrud() {
             "Content-Type": "application/json",
             // Authorization: `Bearer ${token}`,
           },
-         credentials: "include",
+          credentials: "include",
           body: JSON.stringify(form),
         });
       } else {
@@ -91,7 +91,7 @@ function UserCrud() {
             "Content-Type": "application/json",
             // Authorization: `Bearer ${token}`,
           },
-            credentials: "include",
+          credentials: "include",
 
           body: JSON.stringify(form),
         });
@@ -126,19 +126,26 @@ function UserCrud() {
   // ======================
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API}/${id}`, {
+      const res = await fetch(`${API}/${id}`, {
         method: "DELETE",
         headers: {
-        //   Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
+          //   Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-          credentials: "include",
-
+        credentials: "include",
       });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "You are not allowed (Only admins)");
+        return;
+      }
 
       fetchUsers();
     } catch (error) {
       console.error("Delete failed:", error);
+      alert("Server error");
     }
   };
 
@@ -211,10 +218,7 @@ function UserCrud() {
             </div>
 
             <div className="actions">
-              <button
-                className="btn edit"
-                onClick={() => handleEdit(user)}
-              >
+              <button className="btn edit" onClick={() => handleEdit(user)}>
                 Edit
               </button>
               <button

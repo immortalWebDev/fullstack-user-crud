@@ -21,6 +21,8 @@ function App() {
           credentials: "include"
         });
 
+        
+
         if (res.ok) {
           setIsLoggedIn(true);
         } else {
@@ -51,40 +53,51 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  if (!isLoggedIn) {
-    return (
-      <div>
+ if (!isLoggedIn) {
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2 className="auth-title">
+          {showRegister ? "Create Account" : "Welcome Back"}
+        </h2>
+
         {showRegister ? (
           <>
             <Register />
-            <p>
+            <p className="auth-toggle">
               Already have an account?{" "}
-              <button onClick={() => setShowRegister(false)}>
+              <span onClick={() => setShowRegister(false)}>
                 Login
-              </button>
+              </span>
             </p>
           </>
         ) : (
           <>
             <Login setIsLoggedIn={setIsLoggedIn} />
-            <p>
+            <p className="auth-toggle">
               Don’t have an account?{" "}
-              <button onClick={() => setShowRegister(true)}>
+              <span onClick={() => setShowRegister(true)}>
                 Register
-              </button>
+              </span>
             </p>
           </>
         )}
       </div>
-    );
-  }
-
-  return (
-    <div>
-      <button onClick={handleLogout}>Logout</button>
-      <UserCrud />
     </div>
   );
+}
+ return (
+  <div className="app-container">
+    <header className="app-header">
+      <h2>Admin Dashboard</h2>
+      <button className="logout-btn" onClick={handleLogout}>
+        Logout
+      </button>
+    </header>
+
+    <UserCrud />
+  </div>
+);
 }
 
 export default App;
