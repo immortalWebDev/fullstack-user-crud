@@ -8,7 +8,8 @@ const {
   deleteUser
 } = require("../controllers/userController");
 
-const { protect } = require("../middleware/authMiddleware");
+const { protect,authorize } = require("../middleware/authMiddleware");
+
 
 // // Public route
 router.get("/", protect, getAllUsers);
@@ -17,7 +18,7 @@ router.get("/:id", protect, getUserById);
 // // Protected routes
 router.post("/", protect, createUser);
 router.put("/:id", protect, updateUser);
-router.delete("/:id", protect, deleteUser);
+router.delete("/:id", protect,authorize("admin") ,deleteUser);
 
 // router.get("/", getAllUsers);
 // router.get("/:id", getUserById);
