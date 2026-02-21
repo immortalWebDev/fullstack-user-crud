@@ -21,7 +21,11 @@ const app = express();
 //   origin: "*"
 // }));
 app.use(cors({
-  origin: "http://localhost:5174",
+  origin: [
+  "http://localhost:5174",
+  "http://localhost:5175",
+  "https://fullstack-user-crud.vercel.app"
+],
   credentials: true
 }));
 
