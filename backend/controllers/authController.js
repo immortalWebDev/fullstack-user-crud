@@ -74,12 +74,16 @@ exports.loginUser = async (req, res) => {
 
 
 exports.logoutUser = (req, res) => {
-  res.cookie("token", "", {
-    httpOnly: true,
-    expires: new Date(0)
-  });
+ const isProduction = process.env.NODE_ENV === "production";
 
-  res.status(200).json({ message: "Logged out successfully" });
+res.cookie("token", "", {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
+  expires: new Date(0)
+});
+
+res.status(200).json({ message: "Logged out successfully" });
 };
 
 //get current admin (session persist at reload page)
