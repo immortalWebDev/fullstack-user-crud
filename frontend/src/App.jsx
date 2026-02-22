@@ -50,7 +50,7 @@ function App() {
 
   // ⏳ Prevent UI flash before auth check finishes
   if (loading) {
-    return <div>Loading...</div>;
+    return <h3 className="loading-state">Loading...</h3>;
   }
 
  if (!isLoggedIn) {

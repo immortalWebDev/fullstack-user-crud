@@ -186,3 +186,7 @@ form button {
 form button:hover {
   background-color: #125aa3;
 }
+
+.loading-state{
+  text-align: center;
+}

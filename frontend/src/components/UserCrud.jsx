@@ -10,6 +10,7 @@ const API = "https://fullstack-user-crud-production.up.railway.app/api/users"
 
 function UserCrud() {
   const [users, setUsers] = useState([]);
+  const [loading,setLoading] = useState(true)
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -27,6 +28,7 @@ function UserCrud() {
   // ======================
   const fetchUsers = async () => {
     try {
+      setLoading(true)
       const res = await fetch(API, {
         headers: {
           //   Authorization: `Bearer ${token}`,
@@ -48,6 +50,9 @@ function UserCrud() {
       setUsers(data.users || data);
     } catch (error) {
       console.error("Error fetching users:", error);
+    }
+    finally{
+        setLoading(false)
     }
   };
 
@@ -208,8 +213,8 @@ function UserCrud() {
       </form>
 
       <hr />
-
-      <ul className="user-list">
+       
+      {loading ? <h3 className="loading-state">Loading data...</h3> : <ul className="user-list">
         {users.map((user) => (
           <li key={user._id} className="user-card">
             <div>
@@ -230,7 +235,7 @@ function UserCrud() {
             </div>
           </li>
         ))}
-      </ul>
+      </ul>}
     </div>
   );
 }
