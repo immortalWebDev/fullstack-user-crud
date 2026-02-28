@@ -4,19 +4,19 @@ on:
   push:
     branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
 
+  test:
     runs-on: ubuntu-latest
 
     steps:
-
-      # 1️⃣ Download your repository code
+      # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Install Node.js on the machine
+      # 2️⃣ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -36,7 +36,7 @@ jobs:
           npm test
 
       # ---------------------------
-      # 🔹 Frontend Tests (Jest + RTL)
+      # 🔹 Frontend Unit Tests
       # ---------------------------
       - name: Install frontend dependencies
         run: |
@@ -57,3 +57,20 @@ jobs:
           npx cypress run
         env:
           CYPRESS_BASE_URL: https://fullstack-user-crud.vercel.app/
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy Frontend to Vercel
+        run: |
+          cd frontend
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
