@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-// const API =
-//   "https://fullstack-user-crud-production.up.railway.app/api/users";
+// const API = "https://fullstack-user-crud-production.up.railway.app/api/users";
 
 // const API = "http://localhost:3000/api/users";
 
