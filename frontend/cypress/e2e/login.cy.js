@@ -40,7 +40,7 @@ describe("Login Flow - Real Authentication", () => {
     // The app on load automatically calls /auth/me to
     // check if a session cookie already exists.
 
-    cy.visit("http://localhost:5173");
+    cy.visit("/");
 
 
     // ---------------------------------------------------------
