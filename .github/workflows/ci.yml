@@ -73,4 +73,4 @@ jobs:
       - name: Deploy Frontend to Vercel
         run: |
           cd frontend
-          vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
