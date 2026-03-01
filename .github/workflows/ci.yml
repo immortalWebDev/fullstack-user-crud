@@ -79,14 +79,24 @@ jobs:
       - name: Pull Vercel Production Environment - Piyush
         run: |
           cd frontend
-          vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          vercel pull \
+          --yes \
+          --environment=production \
+          --token=$VERCEL_TOKEN \
+          --scope=$VERCEL_ORG_ID \
+          --project=$VERCEL_PROJECT_ID
 
       - name: Build Frontend for Production - Piyush
         run: |
           cd frontend
-          vercel build --prod --token=$VERCEL_TOKEN
+          vercel build \
+           --prod \
+           --token=$VERCEL_TOKEN
 
       - name: Deploy Frontend to Vercel - Piyush
         run: |
           cd frontend
-          vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+          vercel deploy \
+           --prebuilt \
+            --prod \
+            --token=$VERCEL_TOKEN
