@@ -223,13 +223,13 @@ function UserCrud() {
 
             <div className="actions">
               <button className="btn edit" onClick={() => handleEdit(user)}>
-                Edit
+                Edit User
               </button>
               <button
                 className="btn delete"
                 onClick={() => handleDelete(user._id)}
               >
-                Delete
+                Delete User
               </button>
             </div>
           </li>

@@ -64,6 +64,11 @@ jobs:
     needs: test-piyush
     if: github.ref == 'refs/heads/main'
 
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    
     steps:
       - name: Checkout Code for Deployment - Piyush
         uses: actions/checkout@v3
@@ -74,14 +79,14 @@ jobs:
       - name: Pull Vercel Production Environment - Piyush
         run: |
           cd frontend
-          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel pull --yes --environment=production --token=$VERCEL_TOKEN
 
       - name: Build Frontend for Production - Piyush
         run: |
           cd frontend
-          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=$VERCEL_TOKEN
 
       - name: Deploy Frontend to Vercel - Piyush
         run: |
           cd frontend
-          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
