@@ -213,7 +213,7 @@ function UserCrud() {
 
       <hr />
        
-      {loading ? <h3 className="loading-state">Loading data...</h3> : <ul className="user-list">
+      {loading ? <h3 className="loading-state">Loading users...</h3> : <ul className="user-list">
         {users.map((user) => (
           <li key={user._id} className="user-card">
             <div>
