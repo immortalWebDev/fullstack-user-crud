@@ -47,7 +47,7 @@ jobs:
           cd frontend
           npx cypress run
         env:
-          CYPRESS_BASE_URL: https://fullstack-user-crud.vercel.app/
+          CYPRESS_BASE_URL: https://fullstack-user-crud-ci.vercel.app/
 
   deployment-piyush:
     runs-on: ubuntu-latest
