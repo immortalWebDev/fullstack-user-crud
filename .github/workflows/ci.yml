@@ -67,7 +67,7 @@ jobs:
           cd frontend
           npm run build
 
-      - name: Deploy to Vercel - Piyush
+      - name: Deploy to Vercel - Piyushh
         run: |
           cd frontend
           npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
