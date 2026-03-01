@@ -69,7 +69,6 @@ jobs:
 
       - name: Deploy to Vercel - Piyushh
         run: |
-          cd frontend
           npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
           npx vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
