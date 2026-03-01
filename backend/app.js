@@ -18,6 +18,9 @@ app.use(
       "http://localhost:5174",
       "http://localhost:5175",
       "https://fullstack-ci.vercel.app",
+      "https://fullstack-user-crud.vercel.app",
+      "https://frontend-ruby-eight-82.vercel.app",
+      "https://frontend-alpha-five-45.vercel.app"
     ],
     credentials: true,
   })
