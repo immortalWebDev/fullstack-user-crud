@@ -1,4 +1,4 @@
-name: Fullstack CI/CD Pipeline - Piyush
+name: Fullstack CI Pipeline - Piyush
 
 on:
   push:
@@ -8,66 +8,59 @@ on:
 
 jobs:
 
-  # ==========================
-  # 1️⃣ TEST JOB
-  # ==========================
-  test:
+  test-piyush:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code - Piyush
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup Node - Piyush
         uses: actions/setup-node@v3
         with:
-          node-version: 22
-          cache: 'npm'
+          node-version: 22.12.0
 
-      # ---------- BACKEND ----------
-      - name: Install Backend Dependencies
-        working-directory: backend
-        run: npm install
+      # Backend
+      - name: Install Backend Dependencies - Piyush
+        run: |
+          cd backend
+          npm install
 
-      - name: Run Backend Tests
-        working-directory: backend
-        run: npm test
+      - name: Run Backend Jest Tests - Piyush
+        run: |
+          cd backend
+          npm test
 
-      # ---------- FRONTEND ----------
-      - name: Install Frontend Dependencies
-        working-directory: frontend
-        run: npm install
+      # Frontend
+      - name: Install Frontend Dependencies - Piyush
+        run: |
+          cd frontend
+          npm install
 
-      - name: Run Frontend Unit Tests
-        working-directory: frontend
-        run: npm test
+      - name: Run Frontend Unit Tests - Piyush
+        run: |
+          cd frontend
+          npm test
 
-      - name: Run Cypress E2E Tests
-        working-directory: frontend
-        run: npx cypress run
+      - name: Run Cypress Tests - Piyush
+        run: |
+          cd frontend
+          npx cypress run
         env:
           CYPRESS_BASE_URL: https://fullstack-user-crud.vercel.app/
 
-  # ==========================
-  # 2️⃣ DEPLOY JOB (GATED)
-  # ==========================
-  deploy:
-    needs: test
+  deployment-piyush:
     runs-on: ubuntu-latest
+    needs: test-piyush
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-
-      - name: Install Frontend Dependencies
-        working-directory: frontend
-        run: npm install
+      - name: Install Frontend Dependencies - Piyush
+        run: |
+          cd frontend
+          npm install
 
       - name: Build Frontend
         working-directory: frontend
