@@ -39,7 +39,7 @@ function Login({ setIsLoggedIn }) {
       <h2>Login</h2>
       <input
         name="email"
-        placeholder="Enter email here"
+        placeholder="Email"
         onChange={handleChange}
       />
       <input
