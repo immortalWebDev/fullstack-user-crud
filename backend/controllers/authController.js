@@ -60,15 +60,15 @@ exports.loginUser = async (req, res) => {
     //   maxAge: 24 * 60 * 60 * 1000,
     // });
 
-    const isProduction = process.env.NODE_ENV === "production";
+   const isProduction = process.env.NODE_ENV === "production";
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: isProduction,       // only secure in production
-      sameSite: isProduction ? "none" : "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,          // ALWAYS true in deployed backend
+    sameSite: "none",      // ALWAYS none for cross-site auth
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+  
     res.status(200).json({ message: "Login successful" });
   } catch (error) {
     res.status(500).json({ message: error.message });
