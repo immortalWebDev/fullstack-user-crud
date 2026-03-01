@@ -22,30 +22,25 @@ jobs:
 
       # Backend
       - name: Install Backend Dependencies - Piyush
-        run: |
-          cd backend
-          npm install
+        working-directory: backend
+        run: npm install
 
       - name: Run Backend Jest Tests - Piyush
-        run: |
-          cd backend
-          npm test
+        working-directory: backend
+        run: npm test
 
       # Frontend
       - name: Install Frontend Dependencies - Piyush
-        run: |
-          cd frontend
-          npm install
+        working-directory: frontend
+        run: npm install
 
       - name: Run Frontend Unit Tests - Piyush
-        run: |
-          cd frontend
-          npm test
+        working-directory: frontend
+        run: npm test
 
       - name: Run Cypress Tests - Piyush
-        run: |
-          cd frontend
-          npx cypress run
+        working-directory: frontend
+        run: npx cypress run
         env:
           CYPRESS_BASE_URL: https://fullstack-user-crud.vercel.app/
 
@@ -57,21 +52,32 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Frontend Dependencies - Piyush
-        run: |
-          cd frontend
-          npm install
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
 
-      - name: Build Frontend
+      - name: Install Frontend Dependencies
         working-directory: frontend
-        run: npm run build
+        run: npm install
 
-      - name: Deploy to Vercel (Production - Original Project)
+      - name: Pull Vercel Project Settings
         working-directory: frontend
-        run: |
-          npx vercel deploy \
-            --prod \
-            --confirm \
-            --token=${{ secrets.VERCEL_TOKEN }} \
-            --scope=${{ secrets.VERCEL_ORG_ID }} \
-            --project=${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build Project
+        working-directory: frontend
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Vercel (Production)
+        working-directory: frontend
+        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
